@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <button type="button" id="btn">Click me</button>
+
+        <h1 id="text">
+
+        </h1>
+    </body>
+
+    <script>
+        // add event listener
+        document.getElementById('btn').addEventListener('click', loadText)
+
+        // loadText function
+        function loadText() {
+            //Create xhr object
+            let xhr = new XMLHttpRequest()
+
+            // method, file location, async(true | false)
+            xhr.open('GET', 'sample.txt', true)
+
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    document.getElementById('text').innerHTML = this.responseText
+                    console.log(this.responseText)
+                } else if (this.status === 404) {
+                    console.log('file not found')
+                }
+            }
+
+            xhr.onerror = function () {
+                console.log('request error...')
+            }
+            xhr.send();
+        }
+    </script>
+
+</html>

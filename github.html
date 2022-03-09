@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Github</title>
+    </head>
+
+    <body>
+        <button id="getGithub">Get Github Users</button>
+        <br><br>
+        <h1>Github Users</h1>
+
+        <div id="usersList"></div>
+
+
+        <script>
+            document.getElementById('getGithub').addEventListener('click', getGithubUsers)
+
+            function getGithubUsers() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://api.github.com/users', true);
+
+                xhr.onload = function () {
+                    if (this.status === 200) {
+                        let githubUsers = JSON.parse(this.response)
+                        outputHtml = ``;
+
+                        for (let i in githubUsers) {
+                            outputHtml += `
+                            <ul>
+                                <li>${githubUsers[i].login}</li>
+                                <li><img src=${githubUsers[i].avatar_url}></img></li>
+                                <a href=${githubUsers[i].followers_url}>Followers</a>
+                                <a href=${githubUsers[i].repos_url}>Repos</a>
+                            </ul>
+                            `
+
+                            document.getElementById('usersList').innerHTML = outputHtml;
+                        }
+                    } else if (this.status === 404) {
+                        console.log("request not found...")
+                    } else if (this.status === 500) {
+                        console.log("server error !!!")
+                    }
+                }
+                xhr.send()
+            }
+        </script>
+    </body>
+
+</html>
